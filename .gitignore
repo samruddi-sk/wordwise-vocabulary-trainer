@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+env/
+venv/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Node.js and frontend builds
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# Generated SDK build artifacts
+srs_sdk/build/
+srs_sdk/dist/
+srs_sdk/*.egg-info/
+
+# OpenAPI Generator binary
+openapi-generator-cli-*.jar
+
+# Operating system
+.DS_Store
+Thumbs.db
