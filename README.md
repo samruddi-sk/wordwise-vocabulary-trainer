@@ -1,112 +1,80 @@
 # Wordwise — Spaced Repetition Vocabulary Trainer
 
-A full-stack vocabulary trainer built for the Outcom.ai coding challenge. It uses FastAPI, SQLite, SQLAlchemy/Alembic, React, Axios, and an OpenAPI-generated Python SDK.
+A full-stack vocabulary learning application that helps users remember
+words through spaced repetition. Built as part of the Aumne AI coding
+challenge.
+
+The application allows users to manage vocabulary, review words based
+on scheduled dates, track learning progress, and inspect review history.
 
 ## Features
 
-- Add and delete vocabulary words (word, definition, language).
-- Review due words with scores from 0 to 5.
-- SM-2-inspired scheduling that follows the brief's explicit examples: score 5 on the first review schedules the next review in 5 days; scores 0–2 schedule it for tomorrow; score 3 modestly increases the interval.
-- Track easiness factor, repetition count, interval, and next review date for every review.
-- View due words, upcoming schedule, recent review history, recall accuracy, streak, and difficult words.
-- OpenAPI docs at `/docs`, backend tests, database migrations, seed data, and Windows setup/run scripts.
+- **Vocabulary Management:** Add and delete words with their definitions
+  and languages.
+- **Spaced Repetition:** Schedule reviews based on recall scores from 0
+  to 5.
+- **Review Scheduling:** Apply challenge-specific scheduling rules for
+  successful and unsuccessful reviews.
+- **Learning History:** Track review attempts, scores, and scheduling
+  information.
+- **Progress Tracking:** View vocabulary counts, review statistics,
+  recall accuracy, learning streaks, and difficult words.
+- **Upcoming Reviews:** Inspect scheduled vocabulary reviews.
+- **REST API:** Access application functionality through FastAPI endpoints.
+- **Interactive API Documentation:** Explore endpoints through Swagger UI.
+- **Python SDK:** Generate a Python client from the OpenAPI specification
+  using OpenAPI Generator.
+- **Database Migrations:** Manage schema changes with Alembic.
+- **Automated Tests:** Run backend and SDK test suites.
+
+## Technology Stack
+
+### Backend
+- Python
+- FastAPI
+- SQLAlchemy
+- SQLite
+- Alembic
+- Pydantic
+
+### Frontend
+- React
+- Vite
+- JavaScript
+- Axios
+
+### SDK and Testing
+- OpenAPI
+- OpenAPI Generator
+- Python SDK
+- Pytest
+
+## Application Architecture
+
+The application follows a client-server architecture.
+
+1. The React frontend provides the user interface.
+2. Axios sends HTTP requests to the FastAPI backend.
+3. FastAPI validates requests and executes application logic.
+4. SQLAlchemy manages database operations.
+5. SQLite stores vocabulary and review information.
+6. The backend returns responses to the frontend.
+
+The frontend communicates with the backend through API requests rather
+than accessing the database directly.
 
 ## Requirements
 
-- Python 3.10 or newer (Python 3.11 is a safe choice for broad package compatibility).
-- Node.js 20 or newer and npm.
-- Java runtime compatible with the installed OpenAPI Generator CLI if generating the SDK locally.
-- Docker is not required or used.
+- Python 3.10 or newer
+- Node.js and npm
+- Java runtime compatible with OpenAPI Generator, if regenerating the SDK
 
-## Setup
+Docker is not required.
 
-### Windows
+## Getting Started
 
-1. Open a terminal in the project directory.
-2. Run `setupdev.bat`.
-3. Run `runapplication.bat`.
-4. Open the frontend at `http://localhost:5173` and API docs at `http://127.0.0.1:8000/docs`.
-
-### macOS / Linux
-
-From the project root:
+### 1. Clone the repository
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-alembic upgrade head
-cd frontend && npm install && cd ..
-```
-
-Start the backend in one terminal:
-
-```bash
-source .venv/bin/activate
-python main.py
-```
-
-Start the frontend in a second terminal:
-
-```bash
-cd frontend
-npm start
-```
-
-Open `http://127.0.0.1:5173`. The backend docs are at `http://127.0.0.1:8000/docs`.
-
-## Database migrations and sample data
-
-Migrations are managed with Alembic:
-
-```bash
-alembic upgrade head
-```
-
-To load sample words into the default database after migration, run the SQL statements in `seed_data.sql` using SQLite. For example, if the `sqlite3` CLI is installed:
-
-```bash
-sqlite3 vocabulary.db < seed_data.sql
-```
-
-The app is usable without seed data; add words from the UI.
-
-## Generate the Python SDK (required by the challenge)
-
-The SDK must be generated from the running API's OpenAPI document rather than handwritten. Start the backend, install Node/npm and a compatible Java runtime, then install OpenAPI Generator CLI:
-
-```bash
-npm install -g @openapitools/openapi-generator-cli
-```
-
-Generate the SDK from the project root:
-
-```bash
-openapi-generator-cli generate -i http://localhost:8000/openapi.json -g python -o srs_sdk --additional-properties=packageName=srs_sdk,projectName=srs-sdk
-```
-
-On Windows, run `generate_sdk.bat`; on macOS/Linux, run `bash generate_sdk.sh`.
-The generator output is intentionally not checked into this source bundle: generate it against the final running API so the client matches the exact OpenAPI schema. The generated package structure can vary slightly by generator version; inspect its generated README and imports before using it.
-
-## API quick reference
-
-- `POST /words/` — create a word; JSON: `{"word":"bonjour","definition":"hello","language":"French"}`
-- `GET /words/due/` — list words due today, including words never reviewed.
-- `POST /words/{word_id}/review/` — submit JSON `{"score": 0}` through `{"score": 5}`.
-- `GET /words/history/` — performance metrics, upcoming schedule, difficult words, and recent reviews.
-- `DELETE /words/{word_id}` — delete a word and its review history.
-
-Interactive docs: `http://127.0.0.1:8000/docs`.
-
-## Tests
-
-```bash
-python -m pytest -q
-```
-
-Tests use an isolated in-memory SQLite database and do not modify your development database.
-
-## Implementation note
-
-The challenge's stated rules and examples take priority over a textbook SM-2 implementation. In particular, the first score of 5 uses a 5-day interval to match the supplied example, and a score from 0–2 resets the interval to one day. The easiness-factor update follows the common SM-2 formula with a minimum factor of 1.3.
+git clone https://github.com/samruddi-sk/wordwise-vocabulary-trainer.git
+cd wordwise-vocabulary-trainer
